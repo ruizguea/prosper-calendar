@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#013653">
+  <meta name="description" content="A clear, five-day view of your doctors’ appointments.">
+  <title>Appointment calendar · Prosper</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23013653'/%3E%3Cpath d='M8 10h16v15H8zM11 7v6m10-6v6M8 16h16' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M13 20h6' stroke='%23ff421c' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./config.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#calendar">Skip to calendar</a>
+  <header class="topbar">
+    <div class="brand"><img src="./assets/prosper-logo.svg" alt="Prosper" width="125" height="38"><span class="brand-divider"></span><span class="workspace-name">Practice workspace</span></div>
+    <div class="nav-current"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="3"/><path d="M8 3v4m8-4v4M4 11h16m-12 4h3"/></svg> Calendar</div>
+    <span class="readonly">Read-only view</span>
+  </header>
+  <main>
+    <div class="page-heading">
+      <div><p class="eyebrow"><span aria-hidden="true">✳</span> SCHEDULING</p><h1>Appointment calendar<span>.</span></h1><p class="intro">A little clarity for a busy week.</p></div>
+      <div class="connection"><span id="connection-label">Connecting to your schedule</span><button class="icon-button" id="refresh" aria-label="Refresh appointments" title="Refresh appointments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5"/></svg></button></div>
+    </div>
+    <section class="filters" aria-label="Calendar filters">
+      <div class="view-filter"><span id="view-label">View by</span><div class="view-toggle" role="group" aria-labelledby="view-label"><button id="view-doctor" type="button" aria-pressed="true">Doctor</button><button id="view-patient" type="button" aria-pressed="false">Patient</button></div><span class="view-hint" id="view-hint">One doctor’s schedule</span></div>
+      <div class="doctor-field"><label id="person-label" for="person-search">Doctor <span>name - ID</span></label><div class="doctor-picker" id="person-picker"><div class="input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="person-search" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="person-options" autocomplete="off" placeholder="Search by doctor name or ID…" disabled><span class="chevron" aria-hidden="true">⌄</span></div><div id="person-options" class="doctor-options" role="listbox" aria-label="Doctors" hidden></div></div></div>
+      <div class="filter-field date-picker" id="month-picker"><label id="month-label" for="month">Month</label><button type="button" id="month" class="date-trigger" aria-haspopup="dialog" aria-expanded="false" aria-controls="month-popover" aria-labelledby="month-label month-value"><svg class="date-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="3"/><path d="M8 3v4m8-4v4M4 11h16m-12 4h3"/></svg><span id="month-value"></span><svg class="date-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></button><div id="month-popover" class="date-popover" role="dialog" aria-label="Choose a month" hidden></div></div>
+      <div class="filter-field week-field date-picker" id="week-picker"><label id="week-label" for="week">Week</label><button type="button" id="week" class="date-trigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="week-options" aria-labelledby="week-label week-value"><svg class="date-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-13 4h8"/></svg><span id="week-value"></span><svg class="date-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></button><div id="week-popover" class="date-popover week-popover" hidden></div></div>
+    </section>
+    <div id="error" class="error-message" role="alert" hidden></div>
+    <section class="calendar-card" id="calendar" aria-label="Appointment calendar" aria-busy="true" tabindex="-1">
+      <div class="calendar-toolbar"><div class="week-title"><h2 id="week-title">Your week</h2><span class="week-tag">MON — FRI</span></div><div class="calendar-navigation"><button id="today" class="text-button">This week</button><div class="arrow-group"><button id="previous" class="icon-button" aria-label="Previous week" title="Previous week"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button><button id="next" class="icon-button" aria-label="Next week" title="Next week"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button></div></div></div>
+      <div class="calendar-meta"><p id="week-summary" role="status" aria-live="polite">Loading appointments…</p><label class="status-field" for="status">Show <select id="status"><option value="all">All bookings</option><option value="active">Active</option><option value="inactive">Not active</option></select></label></div>
+      <div class="activity-key" aria-label="Booking status key"><span class="activity-key-item"><span class="activity-sample is-active" aria-hidden="true">✓</span>Active</span><span class="activity-key-item"><span class="activity-sample is-inactive" aria-hidden="true">−</span>Not active</span></div>
+      <div class="calendar-scroll" id="calendar-scroll" tabindex="0" aria-label="Five-day calendar. Scroll to see more hours or days."><div class="calendar-inner"><div class="day-headers" id="day-headers"></div><div class="calendar-grid" id="calendar-grid"></div></div></div>
+      <div class="calendar-footer"><span>Appointment types</span><div id="legend" class="legend" aria-label="Appointment color key"></div></div>
+    </section>
+    <footer class="page-footer"><span id="timezone-note">All times in UTC</span><span>Made for a smoother day.</span></footer>
+  </main>
+  <dialog id="appointment-dialog" aria-labelledby="detail-name"><button id="close-dialog" class="icon-button close-dialog" aria-label="Close appointment details"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button><p class="eyebrow">APPOINTMENT DETAILS</p><h2 id="detail-name"></h2><div id="appointment-details"></div><button id="done-dialog" class="primary-button">Done</button></dialog>
+  <noscript><p class="error-message">Enable JavaScript to view the appointment calendar.</p></noscript>
+</body>
+</html>
